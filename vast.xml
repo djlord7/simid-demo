@@ -19,7 +19,7 @@
         <!-- SIMID Interactive Creative -->
         <Creative sequence="1" id="simidCreative">
           <InteractiveCreativeFile type="application/javascript" apiFramework="SIMID">
-            <![CDATA[https://djlord7.github.io/simid-demo/simid.js]]>
+            <![CDATA[https://djlord7.github.io/simid-demo/simid.html]]>
           </InteractiveCreativeFile>
         </Creative>
       </Creatives>
