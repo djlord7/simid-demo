@@ -4,17 +4,19 @@
       <AdSystem>SIMID Demo</AdSystem>
       <AdTitle>SIMID Interactive Test</AdTitle>
       <Creatives>
+        <!-- Main Linear Video Creative -->
         <Creative sequence="1" id="videoCreative">
           <Linear>
             <Duration>00:00:15</Duration>
             <MediaFiles>
               <MediaFile delivery="progressive" type="video/mp4" width="1280" height="720">
-                <![CDATA[https://cdn.pixabay.com/vimeo/650003193/Vertical%20Mountains%20-%20650003193_960x540.mp4]]>
+                <![CDATA[https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4]]>
               </MediaFile>
             </MediaFiles>
           </Linear>
         </Creative>
 
+        <!-- SIMID Interactive Creative -->
         <Creative sequence="1" id="simidCreative">
           <InteractiveCreativeFile type="application/javascript" apiFramework="SIMID">
             <![CDATA[https://djlord7.github.io/simid-demo/simid.js]]>
