@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SIMID Auto Playable Frame</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+    #playableFrame {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <iframe
+    id="playableFrame"
+    src="https://tech-iion.github.io/advertiser-creatives/allKinds/"
+    allowfullscreen>
+  </iframe>
+
+  <script>
+    // Notify SIMID player the creative is ready
+    window.parent.postMessage(JSON.stringify({
+      type: 'creativeReady'
+    }), '*');
+
+    // Optionally, pause the video content in player
+    window.parent.postMessage(JSON.stringify({
+      type: 'requestPauseVideo'
+    }), '*');
+  </script>
+</body>
+</html>
