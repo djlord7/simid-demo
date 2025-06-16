@@ -7,10 +7,10 @@
         <!-- Main Linear Video Creative -->
         <Creative sequence="1" id="videoCreative">
           <Linear>
-            <Duration>00:00:15</Duration>
+            <Duration>00:00:30</Duration>
             <MediaFiles>
               <MediaFile delivery="progressive" type="video/mp4" width="1280" height="720">
-                <![CDATA[https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4]]>
+                <![CDATA[https://www.youtube.com/watch?v=aP2up9N6H-g]>
               </MediaFile>
             </MediaFiles>
           </Linear>
