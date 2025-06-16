@@ -3,6 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>SIMID Try Me Ad</title>
+<script src="https://interactiveadvertisingbureau.github.io/SIMID/simid_protocol.js"></script>
+  <script>
+    let protocol;
+
+    window.onload = function () {
+      // ✅ Create SIMID protocol instance
+      protocol = new SimidProtocol();
+      protocol.createSession();
+
+      // Send creativeReady once loaded
+      protocol.sendMessage('creativeReady');
+
+      // Listen for init and resolve it
+      protocol.addListener('init', (event) => {
+        protocol.resolve(event);
+      });
+
   <style>
     html, body {
       margin: 0;
