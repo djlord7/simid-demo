@@ -1,29 +1,39 @@
-<VAST version="4.1" xmlns="http://www.iab.com/VAST">
-  <Ad id="simid-widget-demo">
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Ad id="simid-creative-demo">
     <InLine>
-      <AdSystem>SIMID Demo</AdSystem>
-      <AdTitle>SIMID Interactive Test</AdTitle>
+      <AdSystem version="1.0">SIMID</AdSystem>
+      <AdTitle>SIMID Demo Creative</AdTitle>
+      <Impression><![CDATA[https://your.tracker/impression]]></Impression>
+
       <Creatives>
-        <!-- Main Linear Video Creative -->
-        <Creative sequence="1" id="videoCreative">
+        <Creative>
           <Linear>
             <Duration>00:00:30</Duration>
+
             <MediaFiles>
-              <MediaFile delivery="progressive" type="video/mp4" width="1280" height="720">
-                <![CDATA[https://interactiveadvertisingbureau.github.io/SIMID/examples/media/fakeAd.mp4]>
+              <MediaFile delivery="progressive" type="video/mp4" width="640" height="360">
+                <![CDATA[https://interactiveadvertisingbureau.github.io/SIMID/examples/media/fakeAd.mp4]]>
               </MediaFile>
+
+              <InteractiveCreativeFile
+                  type="text/html"
+                  apiFramework="SIMID"
+                  variableDuration="true">
+                <![CDATA[https://djlord7.github.io/simid-demo/simid_overlay.html]]>
+              </InteractiveCreativeFile>
             </MediaFiles>
+
+            <AdParameters>
+              <![CDATA[
+                {
+                  "customParam": "optionalData"
+                }
+              ]]>
+            </AdParameters>
           </Linear>
         </Creative>
-
-        <!-- SIMID Interactive Creative -->
-        <Creative sequence="1" id="simidCreative">
-          <InteractiveCreativeFile type="application/javascript" apiFramework="SIMID">
-            <![CDATA[https://djlord7.github.io/simid-demo/simid.html]]>
-          </InteractiveCreativeFile>
-        </Creative>
       </Creatives>
-      <Impression><![CDATA[https://tracker.iion.com/impression]]></Impression>
     </InLine>
   </Ad>
 </VAST>
