@@ -11,71 +11,42 @@
       overflow: hidden;
     }
     iframe {
-      position: absolute;
-      top: 0; left: 0;
       width: 100%;
       height: 100%;
       border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
       z-index: 9999;
     }
   </style>
-</head>
-<body>
-  <!-- The playable iframe loaded immediately -->
-  <iframe src="https://tech-iion.github.io/advertiser-creatives/allKinds/"></iframe>
-
   <script>
-    // Minimal SIMID Creative Handler
     class SimidPlayableAd {
       constructor() {
-        this.sessionId = null;
-        this.messageId = 1;
-        this.pendingResponses = new Map();
-        window.addEventListener("message", this.receiveMessage.bind(this));
-        this.sendMessage("creativeReady");
+        this.simidProtocol = new SimidProtocol();
+        this.simidProtocol.addListener('init', this.onInit.bind(this));
+        this.simidProtocol.addListener('startCreative', this.onStartCreative.bind(this));
+        this.simidProtocol.sendMessage('creativeReady');
       }
 
-      sendMessage(type, args = {}) {
-        const msg = {
-          type,
-          messageId: this.messageId++,
-          sessionId: this.sessionId,
-          args
-        };
-        window.parent.postMessage(JSON.stringify(msg), "*");
+      onInit(event) {
+        this.simidProtocol.resolve(event);
       }
 
-      receiveMessage(event) {
-        try {
-          const data = JSON.parse(event.data);
-          if (!data.type) return;
-
-          switch (data.type) {
-            case "createSession":
-              this.sessionId = data.sessionId;
-              this.sendMessage("resolve", { messageId: data.messageId });
-              break;
-
-            case "SIMID:Player:init":
-              this.sendMessage("resolve", { messageId: data.messageId });
-              break;
-
-            case "SIMID:Player:startCreative":
-              this.sendMessage("resolve", { messageId: data.messageId });
-              break;
-
-            default:
-              this.sendMessage("resolve", { messageId: data.messageId });
-              break;
-          }
-        } catch (e) {
-          console.warn("Invalid SIMID message", e);
-        }
+      onStartCreative(event) {
+        this.simidProtocol.sendMessage('requestPauseVideo');
+        this.simidProtocol.resolve(event);
       }
     }
 
-    // Instantiate
-    new SimidPlayableAd();
+    window.onload = () => {
+      new SimidPlayableAd();
+
+      const iframe = document.createElement("iframe");
+      iframe.src = "https://tech-iion.github.io/advertiser-creatives/allKinds/";
+      document.body.appendChild(iframe);
+    };
   </script>
-</body>
+</head>
+<body></body>
 </html>
