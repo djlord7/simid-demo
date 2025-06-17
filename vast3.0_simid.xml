@@ -25,7 +25,7 @@
             </VideoClicks>
 
             <MediaFiles>
-              <MediaFile delivery="progressive" type="video/mp4" width="1280" height="720" scalable="true" maintainAspectRatio="true">
+              <MediaFile delivery="progressive" type="video/mp4" width="640" height="360" scalable="true" maintainAspectRatio="true">
                 <![CDATA[https://djlord7.github.io/simid-demo/cookingVideo.mp4]]>
               </MediaFile>
               <InteractiveCreativeFile type="application/javascript" apiFramework="SIMID">
