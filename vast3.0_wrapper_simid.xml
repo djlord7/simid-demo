@@ -3,15 +3,9 @@
   <Ad id="iionSIMIDWrapper">
     <Wrapper>
       <AdSystem>iionSIMID</AdSystem>
-      <VASTAdTagURI>
-        <![CDATA[https://djlord7.github.io/simid-demo/vast3.0_simid.xml]>
-      </VASTAdTagURI>
-      <Error>
-        <![CDATA[https://yourdomain.com/tracking/error]]>
-      </Error>
-      <Impression>
-        <![CDATA[https://yourdomain.com/tracking/impression]]>
-      </Impression>
+      <VASTAdTagURI><![CDATA[https://djlord7.github.io/simid-demo/vast3.0_simid.xml]]></VASTAdTagURI>
+      <Error><![CDATA[https://yourdomain.com/tracking/error]]></Error>
+      <Impression><![CDATA[https://yourdomain.com/tracking/impression]]></Impression>
       <Creatives>
         <Creative id="1" sequence="1">
           <Linear>
@@ -31,7 +25,6 @@
           </Linear>
         </Creative>
       </Creatives>
-
       <Extensions>
         <Extension type="geo">
           <Country>IN</Country>
