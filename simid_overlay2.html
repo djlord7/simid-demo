@@ -24,7 +24,7 @@
   <iframe id="playableFrame" src="https://tech-iion.github.io/advertiser-creatives/allKinds/"></iframe>
 
   <script>
-    // === Inlined SIMID Protocol ===
+    // === Protocol Message Types ===
     const ProtocolMessage = {
       CREATE_SESSION: 'createSession',
       RESOLVE: 'resolve',
@@ -46,6 +46,7 @@
       PlayerMessage.FATAL_ERROR,
     ];
 
+    // === SimidProtocol Class ===
     class SimidProtocol {
       constructor() {
         this.listeners_ = {};
@@ -59,12 +60,8 @@
       createSession() {
         this.generateSessionId_();
         this.sendMessage(ProtocolMessage.CREATE_SESSION).then(
-          () => {
-            console.log('SIMID: Session created.');
-          },
-          () => {
-            console.log('SIMID: Session rejected.');
-          }
+          () => console.log('SIMID: Session created.'),
+          () => console.warn('SIMID: Session rejected.')
         );
       }
 
@@ -164,13 +161,13 @@
       }
     }
 
-    // === SIMID Playback Creative ===
+    // === Main Logic ===
     window.onload = function () {
       const simid = new SimidProtocol();
       simid.createSession();
 
       simid.addListener('Player:init', (message) => {
-        simid.resolve(message); // Always accept init
+        simid.resolve(message);
       });
 
       simid.addListener('Player:startCreative', (message) => {
