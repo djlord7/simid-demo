@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SIMID Playable Ad</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+    iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <!-- The playable iframe loaded immediately -->
+  <iframe src="https://tech-iion.github.io/advertiser-creatives/allKinds/"></iframe>
+
+  <script>
+    // Minimal SIMID Creative Handler
+    class SimidPlayableAd {
+      constructor() {
+        this.sessionId = null;
+        this.messageId = 1;
+        this.pendingResponses = new Map();
+        window.addEventListener("message", this.receiveMessage.bind(this));
+        this.sendMessage("creativeReady");
+      }
+
+      sendMessage(type, args = {}) {
+        const msg = {
+          type,
+          messageId: this.messageId++,
+          sessionId: this.sessionId,
+          args
+        };
+        window.parent.postMessage(JSON.stringify(msg), "*");
+      }
+
+      receiveMessage(event) {
+        try {
+          const data = JSON.parse(event.data);
+          if (!data.type) return;
+
+          switch (data.type) {
+            case "createSession":
+              this.sessionId = data.sessionId;
+              this.sendMessage("resolve", { messageId: data.messageId });
+              break;
+
+            case "SIMID:Player:init":
+              this.sendMessage("resolve", { messageId: data.messageId });
+              break;
+
+            case "SIMID:Player:startCreative":
+              this.sendMessage("resolve", { messageId: data.messageId });
+              break;
+
+            default:
+              this.sendMessage("resolve", { messageId: data.messageId });
+              break;
+          }
+        } catch (e) {
+          console.warn("Invalid SIMID message", e);
+        }
+      }
+    }
+
+    // Instantiate
+    new SimidPlayableAd();
+  </script>
+</body>
+</html>
