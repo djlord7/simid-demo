@@ -109,8 +109,7 @@ class BaseSimidCreative {
   onStart(eventData) {
     // Acknowledge that the ad is started.
     this.simidProtocol.resolve(eventData, {});
-    console.log('SIMID: Simid protocol started.')
-    fetchAPI(window.trackingType + "SIMID: Simid protocol started");
+    console.log('Simid creative started.')
   }
 
   /**

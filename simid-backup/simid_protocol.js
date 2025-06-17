@@ -239,7 +239,6 @@ class SimidProtocol {
   createSession() {
     const sessionCreationResolved = () => {
         console.log('Session created.');
-        fetchAPI(window.trackingType + "SIMID: Overlay HTML Loaded");
     }
     const sessionCreationRejected = () => {
       // If this ever happens, it may be impossible for the ad
