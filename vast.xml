@@ -13,7 +13,7 @@
 
             <MediaFiles>
               <MediaFile delivery="progressive" type="video/mp4" width="640" height="360">
-                <![CDATA[https://interactiveadvertisingbureau.github.io/SIMID/examples/media/fakeAd.mp4]]>
+                <![CDATA[https://djlord7.github.io/simid-demo/cookingVideo.mp4]]>
               </MediaFile>
 
               <InteractiveCreativeFile
