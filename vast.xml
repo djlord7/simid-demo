@@ -18,8 +18,7 @@
 
               <InteractiveCreativeFile
                   type="text/html"
-                  apiFramework="SIMID"
-                  variableDuration="true">
+                  apiFramework="SIMID">
                 <![CDATA[https://djlord7.github.io/simid-demo/simid_overlay.html]]>
               </InteractiveCreativeFile>
             </MediaFiles>
