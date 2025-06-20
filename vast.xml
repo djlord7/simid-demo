@@ -8,7 +8,7 @@
 
       <Creatives>
         <Creative>
-         <UniversalAdId idRegistry="unknown">123456</UniversalAdId>
+         <UniversalAdId idRegistry="unknown" idValue="123456">123456</UniversalAdId>
           <Linear>
             <Duration>00:00:30</Duration>
 
