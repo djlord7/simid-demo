@@ -7,7 +7,7 @@ class SimidOverlay extends BaseSimidCreative {
 
   showPlayableAd() {
     const iframe = document.createElement('iframe');
-    iframe.src = 'https://tech-iion.github.io/advertiser-creatives/allKinds/';
+    iframe.src = 'https://tech-iion.github.io/advertiser-creatives/allkindsLandscape/';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';
