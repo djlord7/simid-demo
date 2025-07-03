@@ -24,7 +24,6 @@
   <iframe id="playableFrame" src="https://tech-iion.github.io/advertiser-creatives/allKinds/"></iframe>
 
   <script>
-    // === Protocol Message Types ===
     const ProtocolMessage = {
       CREATE_SESSION: 'createSession',
       RESOLVE: 'resolve',
@@ -35,7 +34,7 @@
       INIT: 'Player:init',
       START_CREATIVE: 'Player:startCreative',
       AD_STOPPED: 'Player:adStopped',
-      FATAL_ERROR: 'Player:fatalError',
+      FATAL_ERROR: 'Player:fatalError'
     };
 
     const EventsThatRequireResponse = [
@@ -43,10 +42,9 @@
       PlayerMessage.INIT,
       PlayerMessage.START_CREATIVE,
       PlayerMessage.AD_STOPPED,
-      PlayerMessage.FATAL_ERROR,
+      PlayerMessage.FATAL_ERROR
     ];
 
-    // === SimidProtocol Class ===
     class SimidProtocol {
       constructor() {
         this.listeners_ = {};
@@ -161,7 +159,6 @@
       }
     }
 
-    // === Main Logic ===
     window.onload = function () {
       const simid = new SimidProtocol();
       simid.createSession();
