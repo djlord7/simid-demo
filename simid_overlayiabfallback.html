@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SIMID Playable Ad</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+    iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="playableFrame" src="https://tech-iion.github.io/advertiser-creatives/allkindsLandscape/"></iframe>
+
+  <!-- Try loading IAB's official SIMID SDK -->
+  <script src="https://interactiveadvertisingbureau.github.io/SIMID/simid.min.js" onerror="fallbackToInlineSimid()"></script>
+
+  <!-- Inline fallback will only run if simid.min.js fails to load -->
+  <script>
+    function fallbackToInlineSimid() {
+      console.warn("Official SIMID SDK failed to load. Falling back to inline implementation.");
+
+      // Paste your entire SimidProtocol class here ↓↓↓
+      // (You already have this in your previous message.)
+      class SimidProtocol {
+        constructor() {
+          this.listeners_ = {};
+          this.sessionId_ = '';
+          this.nextMessageId_ = 1;
+          this.target_ = window.parent;
+          this.resolutionListeners_ = {};
+          window.addEventListener('message', this.receiveMessage.bind(this), false);
+        }
+
+        createSession() {
+          this.generateSessionId_();
+          this.sendMessage('createSession').then(
+            () => console.log('SIMID: Session created.'),
+            () => console.warn('SIMID: Session rejected.')
+          );
+        }
+
+        sendMessage(messageType, messageArgs = {}) {
+          const messageId = this.nextMessageId_++;
+          const type = messageType === 'createSession' ? messageType : `SIMID:${messageType}`;
+          const message = {
+            sessionId: this.sessionId_,
+            messageId,
+            type,
+            timestamp: Date.now(),
+            args: messageArgs
+          };
+
+          const needsResponse = ['createSession', 'Player:init', 'Player:startCreative', 'Player:adStopped', 'Player:fatalError'].includes(messageType);
+          if (needsResponse) {
+            return new Promise((resolve, reject) => {
+              this.addResolveRejectListener_(messageId, resolve, reject);
+              this.target_.postMessage(JSON.stringify(message), '*');
+            });
+          } else {
+            this.target_.postMessage(JSON.stringify(message), '*');
+            return Promise.resolve();
+          }
+        }
+
+        receiveMessage(event) {
+          if (!event || !event.data) return;
+          let data;
+          try {
+            data = JSON.parse(event.data);
+          } catch (e) {
+            console.warn("Invalid SIMID message", e);
+            return;
+          }
+
+          if (!data || !data.type) return;
+          const { sessionId, type } = data;
+
+          const isCreatingSession = this.sessionId_ === '' && type === 'createSession';
+          const isSessionIdMatch = this.sessionId_ === sessionId;
+          if (!isCreatingSession && !isSessionIdMatch) return;
+
+          if (type === 'createSession') {
+            this.sessionId_ = sessionId;
+            this.resolve(data);
+            (this.listeners_[type] || []).forEach(fn => fn(data));
+          } else if (type === 'resolve' || type === 'reject') {
+            const correlatingId = data.args.messageId;
+            const fn = this.resolutionListeners_[correlatingId];
+            if (fn) {
+              fn(data);
+              delete this.resolutionListeners_[correlatingId];
+            }
+          } else if (type.startsWith('SIMID:')) {
+            const shortType = type.substring(6);
+            (this.listeners_[shortType] || []).forEach(fn => fn(data));
+          }
+        }
+
+        resolve(incomingMessage, outgoingArgs = {}) {
+          const messageId = this.nextMessageId_++;
+          const message = {
+            sessionId: this.sessionId_,
+            messageId,
+            type: 'resolve',
+            timestamp: Date.now(),
+            args: {
+              messageId: incomingMessage.messageId,
+              value: outgoingArgs
+            }
+          };
+          this.target_.postMessage(JSON.stringify(message), '*');
+        }
+
+        addResolveRejectListener_(id, resolve, reject) {
+          const listener = (data) => {
+            if (data.type === 'resolve') resolve(data.args.value);
+            else if (data.type === 'reject') reject(data.args.value);
+          };
+          this.resolutionListeners_[id] = listener.bind(this);
+        }
+
+        generateSessionId_() {
+          const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          this.sessionId_ = `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
+        }
+
+        addListener(messageType, callback) {
+          if (!this.listeners_[messageType]) this.listeners_[messageType] = [];
+          this.listeners_[messageType].push(callback);
+        }
+
+        setMessageTarget(target) {
+          this.target_ = target;
+        }
+      }
+
+      initSimid();
+    }
+
+    // This runs regardless of source
+    function initSimid() {
+      const simid = new (window.SimidProtocol || SimidProtocol)();
+      simid.createSession();
+
+      simid.addListener('Player:init', (message) => {
+        simid.resolve(message);
+      });
+
+      simid.addListener('Player:startCreative', (message) => {
+        simid.resolve(message);
+      });
+    }
+
+    // If script loads successfully, run initSimid after load
+    window.addEventListener('load', () => {
+      if (window.SimidProtocol) {
+        initSimid();
+      }
+    });
+  </script>
+</body>
+</html>
